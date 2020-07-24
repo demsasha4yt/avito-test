@@ -18,16 +18,17 @@ app.use((req, res, next) => {
 
 app.use(bodyParser.json())
 
-app.use((req, res, next) => {
-    console.log(req.body)
-    next()
-})
-
 app.post('/users/add', require('./controllers/User').createUser)
 app.post('/chats/add', require('./controllers/Chat').createChat)
 app.post('/messages/add', require('./controllers/Message').createMessage)
 app.post('/chats/get', require('./controllers/Chat').findChatsByUser)
 app.post('/messages/get', require('./controllers/Message').findMessagesByChat)
+
+app.use((req, res, send) => {
+    res.status(404).json({
+        message: 'Not fo'
+    })
+})
 
 const APP_PORT = process.env.APP_PORT || 9000;
 app.listen(APP_PORT, () => {

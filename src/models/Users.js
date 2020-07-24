@@ -16,6 +16,7 @@ module.exports = function(sequelize, DataTypes) {
         defaultValue: DataTypes.NOW
       }
     }, {
+      underscored: true,
       tableName: 'users'
     });
   };

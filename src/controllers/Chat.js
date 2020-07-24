@@ -1,10 +1,12 @@
 const {
     Chats,
-    UserChat,
     Users,
-    Messages
 } = require('../modules/mysql')
 const mysql = require('../modules/mysql')
+
+function hasDuplicates(arr) {
+    return new Set(arr).size !== arr.length
+}
 
 module.exports = {
     createChat: async (req, res, next) => {
@@ -21,8 +23,13 @@ module.exports = {
             if (data.users == null || !Array.isArray(data.users)) {
                 throw new Error(`Expected user ids array`)
             }
-            
-            let max = Math.max(...data.user) // Поскольку мы не удаляем юзеров, достаточно проверить последний ID.
+            if (data.users.length == 0) {
+                throw new Error('Expected at least 1 user')
+            }
+            if (hasDuplicates(data.users)) {
+                throw new Error('Duplicates in user array are forbidden')
+            }
+            let max = Math.max(...data.users) // Поскольку мы не удаляем юзеров, достаточно проверить последний ID.
             const validateUser = await Users.count({
                 where: {
                     id: max
@@ -38,16 +45,16 @@ module.exports = {
                     last_message: 0,
                     Users: data.use
                 })
+                await chat.addUsers(data.users)
+                res.status(201).send(`${chat.id}`)
             } catch (e) {
                 if (e.message = 'Validation error') {
                     throw new Error(`Chat ${data.name} already exists`)
                 }
                 throw new Error(e.message)
             }
-            await chat.addUsers(data.users)
-            res.status(201).send(`${chat.id}`)
+
         } catch (e) {
-            console.error(e)
             res.status(500).json({
                 message: `${e.message}`
             })
@@ -70,7 +77,10 @@ module.exports = {
                 order: [
                     ['last_message', 'DESC']
                 ],
-                include: [Users]
+                include: {
+                    model: Users,
+                    as: 'users'
+                }
             })
             res.status(200).json(chats)
         } catch (e) {

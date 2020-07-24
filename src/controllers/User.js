@@ -1,6 +1,5 @@
 const {
     Users,
-    UserChat
 } = require('../modules/mysql')
 
 module.exports = {
@@ -14,13 +13,13 @@ module.exports = {
                 const user = await Users.create({
                     username: data.username
                 })
+                res.status(201).send(`${user.id}`)
             } catch (e) {
                 if (e.message = 'Validation error') {
                     throw new Error(`User ${data.username} already exists`)
                 }                
                 throw new Error(e.message)
             }
-            res.status(201).send(`${user.id}`)
         } catch (e) {
             res.status(500).json({
                 message: `${e.message}`

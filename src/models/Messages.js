@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
           defaultValue: DataTypes.NOW
         }
       }, {
+        underscored: true,
         tableName: 'messages'
       });
 }

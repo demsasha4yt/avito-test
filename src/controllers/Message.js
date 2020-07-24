@@ -1,6 +1,5 @@
 const {
     Messages,
-    Users,
     Chats
 } = require('../modules/mysql')
 const Chat = require('./Chat')

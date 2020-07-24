@@ -29,8 +29,8 @@ fs.readdirSync(path.join(__dirname, '..', '..', 'models'))
         mysql[model.name] = model
     })
 
-mysql['Users'].belongsToMany(mysql['Chats'], { through: mysql['UserChat'] });
-mysql['Chats'].belongsToMany(mysql['Users'], { through: mysql['UserChat'] });
+mysql['Users'].belongsToMany(mysql['Chats'], { through: mysql['UserChat'], foreignKey: 'author', otherKey: 'chat' });
+mysql['Chats'].belongsToMany(mysql['Users'], { through: mysql['UserChat'], foreignKey: 'chat', otherKey: 'author' });
 mysql['Messages'].belongsTo(mysql['Users'])
 mysql['Messages'].belongsTo(mysql['Chats'])
 

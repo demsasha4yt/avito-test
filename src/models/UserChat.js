@@ -6,6 +6,7 @@ module.exports = function(sequelize, DataTypes) {
         autoIncrement: true
     }
     }, {
-    tableName: 'userchat'
+        underscored: true,
+        tableName: 'userchat'
     });
 };
