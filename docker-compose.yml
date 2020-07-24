@@ -1,25 +1,14 @@
-redis:
-  image: redis
-  container_name: cache
-  expose:
-    - 6379
-  volumes:
-    - ./data/redis-data:/var/lib/redis
-    - ./data/redis.conf:/usr/local/etc/redis/redis.conf
-
 app:
   build: ./
   volumes: 
     - ./src/:/var/www/app
   links:
-    - redis
     - db
   ports: 
     - 9000:9000
   environment:
     - NODE_ENV=development
     - APP_PORT=9000
-    - REDIS_URL=redis://cache
     - MYSQL_URL=db
     - MYSQL_USER=root
     - MYSQL_DATABASE=avito_chat
