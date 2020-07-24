@@ -23,8 +23,8 @@ module.exports = {
 
             const message = await Messages.create({
                 text: data.text,
-                UserId: data.author,
-                ChatId: data.chat
+                author: data.author,
+                chat: data.chat
             })
 
             Chats.update({
@@ -50,13 +50,13 @@ module.exports = {
             if (data == null) {
                 throw new Error('Expected body')
             }
-            if (data.chat == null || isNaN(data.char)) {
+            if (data.chat == null || isNaN(data.chat)) {
                 throw new Error('Expected chat')
             }
             const messages = await Messages.findAll({
-                where: {ChatId: data.chat},
+                where: {chat: data.chat},
                 order: [
-                    ['created_at', 'DESC']
+                    ['created_at', 'ASC']
                 ]
             })
             res.status(200).json(messages)

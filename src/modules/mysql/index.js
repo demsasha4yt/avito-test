@@ -29,10 +29,10 @@ fs.readdirSync(path.join(__dirname, '..', '..', 'models'))
         mysql[model.name] = model
     })
 
-mysql['Users'].belongsToMany(mysql['Chats'], { through: mysql['UserChat'], foreignKey: 'author', otherKey: 'chat' });
-mysql['Chats'].belongsToMany(mysql['Users'], { through: mysql['UserChat'], foreignKey: 'chat', otherKey: 'author' });
-mysql['Messages'].belongsTo(mysql['Users'])
-mysql['Messages'].belongsTo(mysql['Chats'])
+mysql['Users'].belongsToMany(mysql['Chats'], { through: mysql['UserChat'], foreignKey: 'user', otherKey: 'chat' });
+mysql['Chats'].belongsToMany(mysql['Users'], { through: mysql['UserChat'], foreignKey: 'chat', otherKey: 'user' });
+mysql['Messages'].belongsTo(mysql['Users'], {foreignKey: 'author'})
+mysql['Messages'].belongsTo(mysql['Chats'], {foreignKey: 'chat'})
 
 console.log(mysql)
 mysql.Sequelize = Sequelize

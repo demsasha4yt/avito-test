@@ -26,7 +26,7 @@ app.post('/messages/get', require('./controllers/Message').findMessagesByChat)
 
 app.use((req, res, send) => {
     res.status(404).json({
-        message: 'Not fo'
+        message: 'Not found'
     })
 })
 

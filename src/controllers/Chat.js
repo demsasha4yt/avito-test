@@ -79,7 +79,6 @@ module.exports = {
                 ],
                 include: {
                     model: Users,
-                    as: 'users'
                 }
             })
             res.status(200).json(chats)

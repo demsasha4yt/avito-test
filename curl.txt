@@ -18,10 +18,10 @@ curl --header "Content-Type: application/json" \
 
   curl --header "Content-Type: application/json" \
   --request POST \
-  --data '{"user": "<USER_ID>"}' \
+  --data '{"user": "1"}' \
   http://192.168.99.101:9000/chats/get
 
   curl --header "Content-Type: application/json" \
   --request POST \
-  --data '{"chat": "<CHAT_ID>"}' \
+  --data '{"chat": "1"}' \
   http://192.168.99.101:9000/messages/get
