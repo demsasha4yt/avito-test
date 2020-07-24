@@ -10,9 +10,16 @@ module.exports = {
             if (data.username == null) {
                 throw new Error("Expected username")
             }
-            const user = await Users.create({
-                username: data.username
-            })
+            try {
+                const user = await Users.create({
+                    username: data.username
+                })
+            } catch (e) {
+                if (e.message = 'Validation error') {
+                    throw new Error(`User ${data.username} already exists`)
+                }                
+                throw new Error(e.message)
+            }
             res.status(201).send(`${user.id}`)
         } catch (e) {
             res.status(500).json({

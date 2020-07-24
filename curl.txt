@@ -1,27 +1,27 @@
 curl --header "Content-Type: application/json" \
   --request POST \
   --data '{"username": "user_1"}' \
-  http://192.168.99.100:9000/users/add
+  http://192.168.99.101:9000/users/add
 
 
 curl --header "Content-Type: application/json" \
   --request POST \
   --data '{"name": "chat_1", "users": ["<USER_ID_1>", "<USER_ID_2>"]}' \
-  http://192.168.99.100:9000/chats/add
+  http://192.168.99.101:9000/chats/add
 
 
 curl --header "Content-Type: application/json" \
   --request POST \
   --data '{"chat": "<CHAT_ID>", "author": "<USER_ID>", "text": "hi"}' \
-  http://192.168.99.100:9000/messages/add
+  http://192.168.99.101:9000/messages/add
 
 
   curl --header "Content-Type: application/json" \
   --request POST \
   --data '{"user": "<USER_ID>"}' \
-  http://192.168.1.100:9000/chats/get
+  http://192.168.99.101:9000/chats/get
 
   curl --header "Content-Type: application/json" \
   --request POST \
   --data '{"chat": "<CHAT_ID>"}' \
-  http://192.168.99.100:9000/messages/get
+  http://192.168.99.101:9000/messages/get

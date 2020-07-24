@@ -3,6 +3,7 @@ const {
     Users,
     Chats
 } = require('../modules/mysql')
+const Chat = require('./Chat')
 
 module.exports = {
     createMessage: async (req, res, next) => {
@@ -20,10 +21,19 @@ module.exports = {
             if (data.text == null) {
                 throw new Error("Expected text")
             }
+
             const message = await Messages.create({
                 text: data.text,
-                UserId: data.user,
+                UserId: data.author,
                 ChatId: data.chat
+            })
+
+            Chats.update({
+                last_message: message.id
+            },{
+                where: {
+                    id: data.chat
+                }
             })
 
             res.status(201).send(`${message.id}`)
@@ -52,7 +62,6 @@ module.exports = {
             })
             res.status(200).json(messages)
         } catch (e) {
-            console.error(e)
             res.status(500).json({
                 message: `${e.message}`
             })

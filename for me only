@@ -1,2 +1,0 @@
-docker-machine create --driver virtualbox --virtualbox-cpu-count "2" --virtualbox-memory "4096" default
-eval "$(docker-machine env default)"

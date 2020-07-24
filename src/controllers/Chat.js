@@ -21,12 +21,29 @@ module.exports = {
             if (data.users == null || !Array.isArray(data.users)) {
                 throw new Error(`Expected user ids array`)
             }
-
-            const chat = await Chats.create({
-                name: data.name,
-                Users: data.use
+            
+            let max = Math.max(...data.user) // Поскольку мы не удаляем юзеров, достаточно проверить последний ID.
+            const validateUser = await Users.count({
+                where: {
+                    id: max
+                }
             })
+            if (validateUser == 0) {
+                throw new Error(`User with id ${max} doesn't exists`)
+            }
 
+            try {
+                const chat = await Chats.create({
+                    name: data.name,
+                    last_message: 0,
+                    Users: data.use
+                })
+            } catch (e) {
+                if (e.message = 'Validation error') {
+                    throw new Error(`Chat ${data.name} already exists`)
+                }
+                throw new Error(e.message)
+            }
             await chat.addUsers(data.users)
             res.status(201).send(`${chat.id}`)
         } catch (e) {
@@ -50,11 +67,13 @@ module.exports = {
                 where: {
                     '$Users.id$': data.user
                 },
+                order: [
+                    ['last_message', 'DESC']
+                ],
                 include: [Users]
             })
             res.status(200).json(chats)
         } catch (e) {
-            console.error(e)
             res.status(500).json({
                 message: `${e.message}`
             })
